@@ -21,8 +21,9 @@ cd /usr/rac_packages
 mkdir gits
 cd gits
 
-#get RAC Gits
 echo "--RAC: DOWNLOADING GITS FROM GITHUB--"
+
+#get RAC Python Server
 git clone https://github.com/roastbeefandchampagne/python.git
 cd python
 echo "--RAC: CHECKING OUT THE RIGHT BRANCHES--"
@@ -33,6 +34,8 @@ cd feed_module
 chmod +x start.sh
 ./start.sh
 echo "RAC: FEED CRON RUNNING..."
+
+#get RAC PHP Frontend
 cd /usr/rac_packages/gits
 git clone https://github.com/roastbeefandchampagne/web.git
 cd web
@@ -40,6 +43,8 @@ git status
 git stash
 git checkout cms_online
 screen -list
+
+
 exit
 
 
