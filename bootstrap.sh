@@ -16,19 +16,29 @@ apt-get install -y --force-yes screen
 #python packages
 pip install feedparser
 
+
+#install Meteor JS
+curl https://install.meteor.com/ | sh
+
+meteor create myapp
+cd myapp
+screen -dmS meteor meteor
+#install Angular JS
+
+
+echo "--RAC: DOWNLOADING GITS FROM GITHUB--"
+
+#get RAC Python Server
 mkdir /usr/rac_packages
 cd /usr/rac_packages
 mkdir gits
 cd gits
 
-echo "--RAC: DOWNLOADING GITS FROM GITHUB--"
-
-#get RAC Python Server
 git clone https://github.com/roastbeefandchampagne/python.git
 cd python
 echo "--RAC: CHECKING OUT THE RIGHT BRANCHES--"
 git status
-git stash
+git stash --all
 git checkout online_server
 cd feed_module
 chmod +x start.sh
