@@ -17,6 +17,7 @@ apt-get install -y --force-yes screen
 
 
 #install Meteor JS
+echo "--INSTALLING: METEOR--"
 curl https://install.meteor.com/ | sh
 
 mkdir /usr/running
@@ -29,7 +30,8 @@ screen -dmS meteor meteor
 
 
 #install Angular JS
-
+echo "--INSTALLING: Angular JS--"
+meteor add urigo:angular
 
 
 #install python dep.
