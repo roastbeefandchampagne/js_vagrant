@@ -19,8 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", "1024", "--cpus", "1", "--ioapic", "on"]
   end
 
-  config.vm.provision :shell, :path => "bootstrap.sh"
-
   config.vm.network :forwarded_port, guest: 3000, host: 8080
+
+  config.vm.provision "shell", path: "bootstrap.sh"
 
 end

@@ -8,16 +8,22 @@
 # 2015
 
 echo "--RAC: VAGRANT INSTALL--"
-echo "--ANGULAR JS + METEOR APP--"
+echo "--Node JS + Meteorite + METEOR APP + ANGULAR JS + Atmosphere--"
 
-apt-get update
-#apt-get install -y --force-yes git
+#install Node JS
+echo "--INSTALLING: Node JS--"
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+apt-get install -y --force-yes nodejs
+sudo apt-get install -y --force-yes npm
 
 apt-get install -y --force-yes screen
 
+#install Meteorite JS
+echo "--INSTALLING: Meteorite JS--"
+npm install -g meteorite
 
 #install Meteor JS
-echo "--INSTALLING: METEOR--"
+echo "--INSTALLING: METEOR JS--"
 curl https://install.meteor.com/ | sh
 
 mkdir /usr/running
@@ -28,15 +34,13 @@ meteor create myapp
 cd myapp
 screen -dmS meteor meteor
 
+#install Atmosphere JS
+echo "--INSTALLING: Atmosphere--"
+meteor add mrt:moment
 
 #install Angular JS
 echo "--INSTALLING: Angular JS--"
 meteor add urigo:angular
-
-
-#install Atmosphere JS
-echo "--INSTALLING: Atmosphere--"
-meteor add mrt:moment
 
 #install python dep.
 #apt-get install python2.7
@@ -52,3 +56,5 @@ meteor add mrt:moment
 
 #python packages
 #pip install feedparser
+
+echo "--INSTALL COMPLETE--"
