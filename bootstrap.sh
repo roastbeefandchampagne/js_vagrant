@@ -34,6 +34,10 @@ echo "--INSTALLING: Angular JS--"
 meteor add urigo:angular
 
 
+#install Atmosphere JS
+echo "--INSTALLING: Atmosphere--"
+meteor add mrt:moment
+
 #install python dep.
 #apt-get install python2.7
 
