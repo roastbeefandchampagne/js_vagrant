@@ -7,10 +7,10 @@ A debian 7.6.0 vagrant with Angular JS &amp; Meteor App
 
 * Meteorite JS
 
-* Meteor App - running on Port 8080<br>
-  folder in /usr/running/meteor/myapp
+* Meteor Test App  "Todos" - running on Port 8080<br>
+  folder in /usr/running/meteor/todos
 
-* Atmosphere package loader for Meteor
+* Atmosphere packages for Meteor
 
 * Angular JS
 

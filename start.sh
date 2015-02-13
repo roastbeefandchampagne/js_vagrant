@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /usr/running/meteor/myapp
+cd /usr/running/meteor/todos
 screen -dmS meteor meteor

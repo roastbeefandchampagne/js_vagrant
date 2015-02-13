@@ -8,7 +8,7 @@
 # 2015
 
 echo "--RAC: VAGRANT INSTALL--"
-echo "--Node JS + Meteorite + METEOR APP + ANGULAR JS + Atmosphere--"
+echo "--Node JS + Meteorite + METEOR APP + ANGULAR JS + Atmosphere packages--"
 
 #install Node JS
 echo "--INSTALLING: Node JS--"
@@ -30,12 +30,14 @@ mkdir /usr/running
 cd /usr/running
 mkdir meteor
 cd meteor
-meteor create myapp
-cd myapp
+#meteor create myapp
+echo "--INSTALLING: METEOR Test App--"
+meteor create --example todos
+cd todos
 screen -dmS meteor meteor
 
 #install Atmosphere JS
-echo "--INSTALLING: Atmosphere--"
+echo "--INSTALLING: Atmosphere package--"
 meteor add mrt:moment
 
 #install Angular JS
