@@ -8,6 +8,8 @@
 echo "--RAC: VAGRANT INSTALL--"
 echo "--NGINX + MYSQL + PYTHON 2.7 + GIT + RAC SYSTEM--"
 
+hostname roastbeefandchampagne.com
+
 apt-get update
 apt-get install -y --force-yes git
 
@@ -16,10 +18,8 @@ apt-get install -y --force-yes screen
 #python packages
 pip install feedparser
 
-mkdir /usr/rac_packages
-cd /usr/rac_packages
-mkdir gits
-cd gits
+mkdir /vagrant/gits
+cd /vagrant/gits
 
 echo "--RAC: DOWNLOADING GITS FROM GITHUB--"
 
@@ -36,21 +36,16 @@ chmod +x start.sh
 echo "RAC: FEED CRON RUNNING..."
 
 #get RAC PHP Frontend
-cd /usr/rac_packages/gits
+cd /vagrant/gits
 git clone https://github.com/roastbeefandchampagne/web.git
 cd web
 git status
 git stash
 git checkout cms_online
-screen -list
 
 
-exit
-
-
-if [ -d /usr/rac_packages/gits ]
+if [ -d /vagrant/gits ]
 then
-	apt-get update
 
 	#install Engine X
 	echo "--RAC: INSTALLING ENGINE-X AND SETTING FRONTEND--"
@@ -58,57 +53,29 @@ then
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
 	sudo apt-get install -y --force-yes nginx
 
-	rm /usr/share/nginx/www/*
-	mv /usr/rac_packages/gits/* /usr/share/nginx/www/
-	chmod -R 777 /usr/share/nginx/www/*
+	#rm /usr/share/nginx/www/*
+	#mv /vagrant/gits* /usr/share/nginx/www/
+	#chmod -R 777 /usr/share/nginx/www/*
 
 	echo "RAC: RESTARTING WEBSERVER"
 	sudo service nginx start
 
+	echo "RAC: INSTALLING MYSQL SERVER"
+	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
+	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
+	sudo apt-get -y install mysql-server
 
-	if [ -d /vagrant/sys/packs/netqmail ]
-	then
-		# install qmail from tar
-		cp -R /vagrant/packages/netqmail*.tar.gz /usr/local/src
-		cd /usr/local/src
-		tar xvzf netqmail*.tar.gz 
-		cd netqmail*
-		groupadd nofiles
-		useradd -g nofiles -d /var/qmail/alias alias
-		useradd -g nofiles -d /var/qmail qmaild
-		useradd -g nofiles -d /var/qmail qmaill
-		useradd -g nofiles -d /var/qmail qmailp
-		groupadd qmail
-		useradd -g qmail -d /var/qmail qmailq
-		useradd -g qmail -d /var/qmail qmailr
-		useradd -g qmail -d /var/qmail qmails
+	echo "RAC: INSTALLING PYTHON 2.7"
+	apt-get install python2.7
 
-		#hostname rac #set hostname
+	echo "RAC: INSTALLING PYTHON PACKAGES"
+	apt-get install -y --force-yes libmysqlclient-dev
+	apt-get install -y --force-yes python-dev
 
-		make setup check
-		./config
-
-		chown -R log:log /etc/servers/qmail/log
-		#mkdir /var/qmail
-		mv /usr/lib/sendmail /usr/lib/sendmail.old
-		mv /usr/sbin/sendmail /usr/sbin/sendmail.old
-		ln -s /var/qmail/bin/sendmail /usr/lib/sendmail
-		ln -s /var/qmail/bin/sendmail /usr/sbin/sendmail
-		ln -s /etc/servers/qmail /service
-
-		mv /usr/local/src/netqmail* /usr/local
-	fi
-
-	#install python dep.
-	#apt-get install python2.7
-
-
-	#install PhP + MySQL
-	#apt-get install -y --force-yes mysql-server php5-mysql
-
-	#ifconfig eth0 | grep inet | awk '{ print $2 }'
+	pip install MySQL-python
 
 	#install php + dep.
-	#apt-get install -y --force-yes php5-fpm
+	echo "RAC: INSTALLING NEWEST VERSION OF PHP 5"
+	apt-get install -y --force-yes php5-fpm
 
 fi
