@@ -63,9 +63,10 @@ then
 	sudo apt-get -y install mysql-server
 
 	#import dev_python DB
-	mysql -u root -p vagrant -h 127.0.0.1 -P 3306
-	CREATE DATABASE ''dev_python''
-	mysql -u root -p dev_python < /vagrant/dev_python.sql
+	#echo "RAC: IMPORTING dev DATABASES"
+	#mysql -u root -p vagrant -h 127.0.0.1 -P 3306
+	#CREATE DATABASE ''dev_python''
+	#mysql -u root -p dev_python < /vagrant/dev_python.sql
 
 	echo "RAC: INSTALLING PYTHON 2.7"
 	apt-get install python2.7
@@ -89,4 +90,11 @@ then
 	echo "RAC: INSTALLING NEWEST VERSION OF PHP 5"
 	apt-get install -y --force-yes php5-fpm
 
+	#clean up
+	echo "RAC: CLEANING UP...."
+	rm -rf /usr/develop/packages/*.tar.gz
+
 fi
+
+echo "RAC: INSTALL COMPLETE"
+echo "RAC: to enter the vagrant use -> vagrant ssh"
