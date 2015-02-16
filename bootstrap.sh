@@ -15,9 +15,6 @@ apt-get install -y --force-yes git
 
 apt-get install -y --force-yes screen
 
-#python packages
-pip install feedparser
-
 mkdir /vagrant/gits
 cd /vagrant/gits
 
@@ -65,12 +62,26 @@ then
 	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
 	sudo apt-get -y install mysql-server
 
+	#import dev_python DB
+	mysql -u root -p vagrant -h 127.0.0.1 -P 3306
+	CREATE DATABASE ''dev_python''
+	mysql -u root -p dev_python < /vagrant/dev_python.sql
+
 	echo "RAC: INSTALLING PYTHON 2.7"
 	apt-get install python2.7
 
 	echo "RAC: INSTALLING PYTHON PACKAGES"
 	apt-get install -y --force-yes libmysqlclient-dev
 	apt-get install -y --force-yes python-dev
+
+	pip install feedparser
+
+	mkdir -p /usr/develop/packages
+	cd /usr/develop/packages
+	wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
+	tar xzf pip-0.7.2.tar.gz
+	cd pip-0.7.2
+	python setup.py install
 
 	pip install MySQL-python
 
