@@ -62,6 +62,19 @@ then
 	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
 	sudo apt-get -y install mysql-server
 
+	echo "--INSTALLING: Node JS--"
+	echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+	curl -sL https://deb.nodesource.com/setup | bash -
+	apt-get update
+	apt-get install -y --force-yes nodejs
+	apt-get install -y build-essential
+	apt-get install -y --force-yes npm
+
+	echo "RAC: INSTALLING ELASTICSEARCH"
+	wget -qO - https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
+	apt-get update -y --force-yes && apt-get install -y --force-yes elasticsearch
+	#update-rc.d elasticsearch defaults 95 10
+	exit
 	#import dev_python DB
 	#echo "RAC: IMPORTING dev DATABASES"
 	#mysql -u root -p vagrant -h 127.0.0.1 -P 3306
