@@ -5,62 +5,62 @@
 # Eric Heun
 # roastbeefandchampagne@gmail.com
 # 2015
-echo "--RAC: VAGRANT INSTALL--"
-echo "--NGINX + MYSQL + PYTHON 2.7 + GIT + RAC SYSTEM--"
+echo "--RAC: ELASTICSEARCH DEV VAGRANT INSTALL--"
+echo "--ELASTICSEARCH + Python 2.7 + NGINX--"
 
-hostname roastbeefandchampagne.com
+#hostname roastbeefandchampagne.com
 
 apt-get update
 apt-get install -y --force-yes git
 
 apt-get install -y --force-yes screen
 
-mkdir /vagrant/gits
-cd /vagrant/gits
+#mkdir /vagrant/gits
+#cd /vagrant/gits
 
-echo "--RAC: DOWNLOADING GITS FROM GITHUB--"
+#echo "--RAC: DOWNLOADING GITS FROM GITHUB--"
 
 #get RAC Python Server
-git clone https://github.com/roastbeefandchampagne/python.git
-cd python
-echo "--RAC: CHECKING OUT THE RIGHT BRANCHES--"
-git status
-git stash
-git checkout online_server
-cd feed_module
-chmod +x start.sh
-./start.sh
-echo "RAC: FEED CRON RUNNING..."
+#git clone https://github.com/roastbeefandchampagne/python.git
+#cd python
+#echo "--RAC: CHECKING OUT THE RIGHT BRANCHES--"
+#git status
+#git stash
+#git checkout feature/elasticsearch
+#cd feed_module
+#chmod +x start.sh
+#./start.sh
+#echo "RAC: FEED CRON RUNNING..."
 
 #get RAC PHP Frontend
-cd /vagrant/gits
-git clone https://github.com/roastbeefandchampagne/web.git
-cd web
-git status
-git stash
-git checkout cms_online
+#cd /vagrant/gits
+#git clone https://github.com/roastbeefandchampagne/web.git
+#cd web
+#git status
+#git stash
+#git checkout cms_online
 
 
-if [ -d /vagrant/gits ]
+if [ -d /vagrant ]
 then
 
 	#install Engine X
-	echo "--RAC: INSTALLING ENGINE-X AND SETTING FRONTEND--"
-	echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/nginx-stable.list
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
-	sudo apt-get install -y --force-yes nginx
+	#echo "--RAC: INSTALLING ENGINE-X AND SETTING FRONTEND--"
+	#echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/nginx-stable.list
+	#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
+	#sudo apt-get install -y --force-yes nginx
 
 	#rm /usr/share/nginx/www/*
 	#mv /vagrant/gits* /usr/share/nginx/www/
 	#chmod -R 777 /usr/share/nginx/www/*
 
-	echo "RAC: RESTARTING WEBSERVER"
-	sudo service nginx start
+	#echo "RAC: RESTARTING WEBSERVER"
+	#sudo service nginx start
 
-	echo "RAC: INSTALLING MYSQL SERVER"
-	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
-	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
-	sudo apt-get -y install mysql-server
+	#echo "RAC: INSTALLING MYSQL SERVER"
+	#sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
+	#sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
+	#sudo apt-get -y install mysql-server
 
 	echo "--INSTALLING: Node JS--"
 	echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
@@ -70,11 +70,23 @@ then
 	apt-get install -y build-essential
 	apt-get install -y --force-yes npm
 
-	echo "RAC: INSTALLING ELASTICSEARCH"
-	wget -qO - https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
-	apt-get update -y --force-yes && apt-get install -y --force-yes elasticsearch
+	echo "--INSTALLING: Java--"
+	apt-get install -y --force-yes openjdk-7-jre
+
+	echo "RAC: INSTALLING Elasticsearch"
+	cd /vagrant
+	mkdir elasticsearch
+	cd elasticsearch
+	wget "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.deb"
+	dpkg -i elasticsearch-1.4.4.deb
 	#update-rc.d elasticsearch defaults 95 10
-	exit
+	/etc/init.d/elasticsearch start
+
+	#installing marvel
+	echo "RAC: INSTALLING ELASTICSEARCH - Marvel"
+	cd /usr/share/elasticsearch 
+	./bin/plugin -i elasticsearch/marvel/latest
+	
 	#import dev_python DB
 	#echo "RAC: IMPORTING dev DATABASES"
 	#mysql -u root -p vagrant -h 127.0.0.1 -P 3306
@@ -88,8 +100,6 @@ then
 	apt-get install -y --force-yes libmysqlclient-dev
 	apt-get install -y --force-yes python-dev
 
-	pip install feedparser
-
 	mkdir -p /usr/develop/packages
 	cd /usr/develop/packages
 	wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
@@ -98,14 +108,18 @@ then
 	python setup.py install
 
 	pip install MySQL-python
+	pip install feedparser
+	pip install elasticsearch
 
 	#install php + dep.
-	echo "RAC: INSTALLING NEWEST VERSION OF PHP 5"
-	apt-get install -y --force-yes php5-fpm
+	#echo "RAC: INSTALLING NEWEST VERSION OF PHP 5"
+	#apt-get install -y --force-yes php5-fpm
 
 	#clean up
 	echo "RAC: CLEANING UP...."
 	rm -rf /usr/develop/packages/*.tar.gz
+	rm -rf /vagrant/*.deb
+	rm -rf /vagrant/elasticsearch
 
 fi
 

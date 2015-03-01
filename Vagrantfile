@@ -16,12 +16,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
 
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "1024", "--cpus", "1", "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--memory", "2048", "--cpus", "2", "--ioapic", "on"]
   end
 
   config.vm.provision :shell, :path => "bootstrap.sh"
 
-  config.vm.network :forwarded_port, guest: 80, host: 9000
-  # config.vm.network :forwarded_port, guest: 3306, host: 3308
+  config.vm.network :forwarded_port, guest: 9200, host: 9200
+  config.vm.network :forwarded_port, guest: 5601, host: 5601
+  config.vm.network :forwarded_port, guest: 3306, host: 3306
 
 end
