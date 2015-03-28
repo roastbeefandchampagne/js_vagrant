@@ -6,7 +6,7 @@
 # roastbeefandchampagne@gmail.com
 # 2015
 echo "--RAC: ELASTICSEARCH DEV VAGRANT INSTALL--"
-echo "--ELASTICSEARCH + Python 2.7 + NGINX--"
+echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
 
 #hostname roastbeefandchampagne.com
 
@@ -32,35 +32,8 @@ apt-get install -y --force-yes screen
 #./start.sh
 #echo "RAC: FEED CRON RUNNING..."
 
-#get RAC PHP Frontend
-#cd /vagrant/gits
-#git clone https://github.com/roastbeefandchampagne/web.git
-#cd web
-#git status
-#git stash
-#git checkout cms_online
-
-
 if [ -d /vagrant ]
 then
-
-	#install Engine X
-	#echo "--RAC: INSTALLING ENGINE-X AND SETTING FRONTEND--"
-	#echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/nginx-stable.list
-	#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
-	#sudo apt-get install -y --force-yes nginx
-
-	#rm /usr/share/nginx/www/*
-	#mv /vagrant/gits* /usr/share/nginx/www/
-	#chmod -R 777 /usr/share/nginx/www/*
-
-	#echo "RAC: RESTARTING WEBSERVER"
-	#sudo service nginx start
-
-	#echo "RAC: INSTALLING MYSQL SERVER"
-	#sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
-	#sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
-	#sudo apt-get -y install mysql-server
 
 	echo "--INSTALLING: Node JS--"
 	echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
@@ -74,7 +47,7 @@ then
 	apt-get install -y --force-yes openjdk-7-jre
 
 	echo "RAC: INSTALLING Elasticsearch"
-	cd /vagrant
+	cd /home
 	mkdir elasticsearch
 	cd elasticsearch
 	wget "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.deb"
@@ -87,9 +60,11 @@ then
 	/etc/init.d/elasticsearch start
 
 	#installing logstash
-	echo 'deb http://packages.elasticsearch.org/logstash/1.4/debian stable main' | sudo tee /etc/apt/sources.list.d/logstash.list
-	apt-get update
-	apt-get install -y --force-yes logstash=1.4.2-1-2c0f5a1
+	cd /home/elasticsearch
+	wget "https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
+	dpkg -i 	cd /home/elasticsearch
+	wget "https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
+	tar -zxvf logstash*.deb
 
 	#set up SSH Keys for the Logstash-forwarder
 	mkdir -p /etc/pki/tls/certs
@@ -105,7 +80,7 @@ then
 	scp /etc/pki/tls/certs/logstash-forwarder.crt vagrant@127.0.0.1:/tmp
 
 	#install logstash-forwarder
-	cd /vagrant/elasticsearch
+	cd /home/elasticsearch
 	cp /vagrant/sys/logstash/forwarder/logstash-forwarder /etc/logstash-forwarder
 	echo 'deb http://packages.elasticsearch.org/logstashforwarder/debian stable main' | sudo tee /etc/apt/sources.list.d/logstashforwarder.list
 	wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
@@ -127,8 +102,15 @@ then
 	cd /usr/share/elasticsearch 
 	./bin/plugin -i elasticsearch/marvel/latest
 
+	#install Nginx
+	#cd /vagrant
+	#apt-get install -y --force-yes nginx
+	#cp /vagrant/sys/nginx/nginx.conf /etc/nginx/sites-available/default
+	#apt-get install -y --force-yes apache2-utils
+	#htpasswd -c /etc/nginx/conf.d/kibana.178.62.66.75.htpasswd vagrant
+
 	#install kibana
-	cd /vagrant/elasticsearch
+	cd /home/elasticsearch
 	wget "https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-linux-x64.tar.gz"
 	tar -zxvf kibana-4.0.0-linux-x64.tar.gz
 	cd kibana-4.0.0-linux-x64
@@ -147,8 +129,8 @@ then
 	apt-get install -y --force-yes libmysqlclient-dev
 	apt-get install -y --force-yes python-dev
 
-	mkdir -p /usr/develop/packages
-	cd /usr/develop/packages
+	mkdir -p /home/develop/packages
+	cd /home/develop/packages
 	wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
 	tar xzf pip-0.7.2.tar.gz
 	cd pip-0.7.2
@@ -166,8 +148,8 @@ then
 
 	#clean up
 	echo "RAC: CLEANING UP...."
-	rm -rf /usr/develop/packages/*.tar.gz
-	rm -rf /vagrant/*.deb
+	rm -rf /home/develop/packages/*.tar.gz
+	#rm -rf /vagrant/*.deb
 	#rm -rf /vagrant/elasticsearch
 
 fi
