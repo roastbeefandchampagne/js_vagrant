@@ -1,17 +1,15 @@
 # Roastbeef and Champagne 
-##### Elasticsearch dev vagrant<br>
+##### Pylons Pyramid dev vagrant<br>
 
 ### Contents
-* Elasticsearch 1 node
-* Elasticsearch Marvel
 * Python 2.7 + packages
-* RAC Gits
+* Pyramid 1.5.4
 
 ### Commands
 
-* start elasticsearch: /etc/init.d/elasticsearch start
+* start testproject "new": cd /vagrant/new; pserve development.ini
 
 ### Links
 
-* elasticsearch node: http://localhost:9200/
-* elasticsearch marvel: http://localhost:9200/_plugin/marvel/
+* pyramid testproject "new": localhost:8080
+

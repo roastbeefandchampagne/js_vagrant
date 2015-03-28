@@ -5,8 +5,8 @@
 # Eric Heun
 # roastbeefandchampagne@gmail.com
 # 2015
-echo "--RAC: ELASTICSEARCH DEV VAGRANT INSTALL--"
-echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
+echo "--RAC: Pyramid DEV VAGRANT INSTALL--"
+echo "--Python 2.7 + Pyramid--"
 
 #hostname roastbeefandchampagne.com
 
@@ -40,9 +40,12 @@ pip install elasticsearch
 pip install pygoogle
 pip install requests
 
+echo "RAC: INSTALLING Pyramid 1.5.4"
 easy_install "pyramid==1.5.4"
 cd /vagrant
 pcreate -s starter new
+cd new
+python setup.py develop
 
 echo "RAC: CLEANING UP...."
 rm -rf /home/develop/packages/*.tar.gz
