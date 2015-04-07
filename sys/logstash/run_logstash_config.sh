@@ -1,0 +1,1 @@
+/opt/logstash/bin/logstash -f /vagrant/sys/logstash/logstash-simple.conf
