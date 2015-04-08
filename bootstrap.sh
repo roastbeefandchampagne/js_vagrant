@@ -14,17 +14,10 @@ apt-get update
 apt-get install -y --force-yes git
 
 apt-get install -y --force-yes screen
+apt-get install -y build-essential
 
 if [ -d /vagrant/sys ]
 then
-
-	echo "--INSTALLING: Node JS--"
-	echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
-	curl -sL https://deb.nodesource.com/setup | bash -
-	apt-get update
-	apt-get install -y --force-yes nodejs
-	apt-get install -y build-essential
-	apt-get install -y --force-yes npm
 
 	echo "--INSTALLING: Java--"
 	apt-get install -y --force-yes openjdk-7-jre
@@ -47,8 +40,10 @@ then
 	wget "https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
 	dpkg -i logstash*.deb
 	cp /vagrant/sys/logstash/run_logstash_config.sh /vagrant/run_logstash_config.sh
-	chmod -R 777 vagrant/run_logstash_config.sh
-	exit
+	chmod -R 777 /vagrant/run_logstash_config.sh
+
+	cd /vagrant
+	./start_all.sh
 
 	#set up SSH Keys for the Logstash-forwarder
 	#mkdir -p /etc/pki/tls/certs
@@ -94,12 +89,6 @@ then
 	tar -zxvf kibana-4.0.0-linux-x64.tar.gz
 	cd kibana-4.0.0-linux-x64
 	screen -dmS kibana ./bin/kibana
-	
-	#import dev_python DB
-	#echo "RAC: IMPORTING dev DATABASES"
-	#mysql -u root -p vagrant -h 127.0.0.1 -P 3306
-	#CREATE DATABASE ''dev_python''
-	#mysql -u root -p dev_python < /vagrant/dev_python.sql
 
 	echo "RAC: INSTALLING PYTHON 2.7"
 	apt-get install python2.7
@@ -120,10 +109,6 @@ then
 	pip install elasticsearch
 	pip install pygoogle
 	pip install requests
-
-	#install php + dep.
-	#echo "RAC: INSTALLING NEWEST VERSION OF PHP 5"
-	#apt-get install -y --force-yes php5-fpm
 
 	#clean up
 	echo "RAC: CLEANING UP...."
