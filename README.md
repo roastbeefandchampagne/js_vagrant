@@ -12,6 +12,11 @@
 
 ### Commands
 
+#### builds:
+
+
+#### runs:
+
 * start all (ELK): /vagrant/start_all.sh
 * start index syslogs to Logstash: /vagrant/run_logstash_config.sh
 * start Kibana: cd /home/elasticsearch/kibana*; screen -dmS kibana ./bin/kibana
@@ -22,3 +27,7 @@
 * elasticsearch node: http://localhost:9200/
 * elasticsearch Marvel: http://localhost:9200/_plugin/marvel/
 * elasticsearch Kibana: http://localhost:5601
+
+### Cluster setup
+
+* screen -dmS el /usr/share/elasticsearch/bin/elasticsearch

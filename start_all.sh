@@ -9,5 +9,4 @@
 service elasticsearch restart
 service logstash restart
 #service logstash-forwarder start
-cd /home/elasticsearch/kibana* 
-screen -dmS kibana ./bin/kibana
+#cd /home/elasticsearch/kibana*; screen -dmS kibana ./bin/kibana

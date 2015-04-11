@@ -45,6 +45,17 @@ then
 	cd /vagrant
 	./start_all.sh
 
+	#installing shield
+	#echo "RAC: INSTALLING ELASTICSEARCH - Shield"
+	#cd /usr/share/elasticsearch 
+	#bin/plugin -i elasticsearch/license/latest
+	#bin/plugin -i elasticsearch/shield/latest
+
+	#bin/elasticsearch
+	#bin/shield/esusers useradd vagrant -r admin
+	#curl -XGET 'http://localhost:9200/'
+	#curl -u vagrant -XGET 'http://localhost:9200/'
+
 	#set up SSH Keys for the Logstash-forwarder
 	#mkdir -p /etc/pki/tls/certs
 	#mkdir /etc/pki/tls/private
