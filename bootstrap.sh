@@ -5,10 +5,8 @@
 # Eric Heun
 # roastbeefandchampagne@gmail.com
 # 2015
-echo "--RAC: ELASTICSEARCH DEV VAGRANT INSTALL--"
+echo "--RAC: ELASTICSEARCH DEV Server INSTALL--"
 echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
-
-#hostname roastbeefandchampagne.com
 
 apt-get update
 apt-get install -y --force-yes git
@@ -16,7 +14,7 @@ apt-get install -y --force-yes git
 apt-get install -y --force-yes screen
 apt-get install -y build-essential
 
-if [ -d /vagrant/sys ]
+if [ -d sys ]
 then
 
 	echo "--INSTALLING: Java--"
@@ -39,10 +37,12 @@ then
 	cd /home/elasticsearch
 	wget "https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
 	dpkg -i logstash*.deb
-	cp /vagrant/sys/logstash/run_logstash_config.sh /vagrant/run_logstash_config.sh
-	chmod -R 777 /vagrant/run_logstash_config.sh
+	cp sys/logstash/run_logstash_config.sh /home/elasticsearch/run_logstash_config.sh
+	chmod -R 777 /home/elasticsearch/run_logstash_config.sh
+	./run_logstash_config.sh
 
-	cd /vagrant
+	cp start_all.sh /home/elasticsearch/start_all.sh
+	cd /home/elasticsearch
 	./start_all.sh
 
 	#installing shield
@@ -130,4 +130,3 @@ then
 fi
 
 echo "RAC: INSTALL COMPLETE"
-echo "RAC: to enter the vagrant use -> vagrant ssh"
