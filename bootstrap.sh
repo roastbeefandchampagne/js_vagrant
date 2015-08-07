@@ -14,7 +14,7 @@ apt-get update
 apt-get install -y --force-yes git
 
 apt-get install -y --force-yes screen
-apt-get install -y build-essential
+apt-get install -y --force-yes build-essential
 
 if [ -d /vagrant/sys ]
 then
@@ -26,8 +26,8 @@ then
 	cd /home
 	mkdir elasticsearch
 	cd elasticsearch
-	wget "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.deb"
-	dpkg -i elasticsearch-1.4.4.deb
+	wget "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.1.deb"
+	dpkg -i elasticsearch-*.deb
 	update-rc.d elasticsearch defaults 95 10
 
 	#installing marvel
@@ -37,7 +37,7 @@ then
 
 	#installing logstash
 	cd /home/elasticsearch
-	wget "https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
+	wget "https://download.elastic.co/logstash/logstash/packages/debian/logstash_1.5.3-1_all.deb"
 	dpkg -i logstash*.deb
 	cp /vagrant/sys/logstash/run_logstash_config.sh /vagrant/run_logstash_config.sh
 	chmod -R 777 /vagrant/run_logstash_config.sh
@@ -96,25 +96,27 @@ then
 
 	#install kibana
 	cd /home/elasticsearch
-	wget "https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-linux-x64.tar.gz"
-	tar -zxvf kibana-4.0.0-linux-x64.tar.gz
-	cd kibana-4.0.0-linux-x64
+	wget "https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz"
+	tar -zxf kibana-*-linux-x64.tar.gz
+	cd kibana*
 	screen -dmS kibana ./bin/kibana
 
 	echo "RAC: INSTALLING PYTHON 2.7"
 	apt-get install python2.7
 
 	echo "RAC: INSTALLING PYTHON PACKAGES"
+	apt-get install -y --force-yes python-bs4
 	apt-get install -y --force-yes libmysqlclient-dev
 	apt-get install -y --force-yes python-dev
 
 	mkdir -p /home/develop/packages
 	cd /home/develop/packages
 	wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
-	tar xzf pip-0.7.2.tar.gz
+	tar -zxf pip-0.7.2.tar.gz
 	cd pip-0.7.2
 	python setup.py install
 
+	pip install beautifulsoup4
 	pip install MySQL-python
 	pip install feedparser
 	pip install elasticsearch
