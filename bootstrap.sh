@@ -87,19 +87,24 @@ then
 	#cp /tmp/logstash-forwarder.crt /etc/pki/tls/certs/
 	#service logstash-forwarder restart
 
-	#install Nginx
-	#cd /vagrant
-	#apt-get install -y --force-yes nginx
-	#cp /vagrant/sys/nginx/nginx.conf /etc/nginx/sites-available/default
-	#apt-get install -y --force-yes apache2-utils
-	#htpasswd -c /etc/nginx/conf.d/kibana.178.62.66.75.htpasswd vagrant
-
 	#install kibana
 	cd /home/elasticsearch
 	wget "https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz"
 	tar -zxf kibana-*-linux-x64.tar.gz
 	cd kibana*
 	screen -dmS kibana ./bin/kibana
+
+	#install Nginx
+	cd /vagrant
+	apt-get install -y --force-yes nginx
+	cp /vagrant/sys/nginx/nginx.conf /etc/nginx/sites-available/default
+	apt-get install -y --force-yes apache2-utils
+	#htpasswd -c /etc/nginx/conf.d/kibana.178.62.66.75.htpasswd vagrant
+
+	echo "RAC: INSTALLING MYSQL SERVER"
+	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
+	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
+	sudo apt-get -y install mysql-server
 
 	echo "RAC: INSTALLING PYTHON 2.7"
 	apt-get install python2.7
