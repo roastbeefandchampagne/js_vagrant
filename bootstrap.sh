@@ -5,10 +5,9 @@
 # Eric Heun
 # roastbeefandchampagne@gmail.com
 # 2015
-echo "--RAC: ELASTICSEARCH DEV VAGRANT INSTALL--"
-echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
 
-#hostname roastbeefandchampagne.com
+echo "--RAC: ELASTICSEARCH - Tornado DEV VAGRANT INSTALL--"
+echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
 
 apt-get update
 apt-get install -y --force-yes git
@@ -95,25 +94,25 @@ then
 	screen -dmS kibana ./bin/kibana
 
 	#install Nginx
-	cd /vagrant
-	apt-get install -y --force-yes php5-fpm
-	cp /vagrant/sys/php/php.ini /etc/php5/fpm/php.ini
-	service php5-fpm restart
+	#cd /vagrant
+	#apt-get install -y --force-yes php5-fpm
+	#cp /vagrant/sys/php/php.ini /etc/php5/fpm/php.ini
+	#service php5-fpm restart
 
-	apt-get install -y --force-yes nginx
-	cp /vagrant/sys/nginx/default /etc/nginx/sites-available/default
-	apt-get install -y --force-yes apache2-utils
+	#apt-get install -y --force-yes nginx
+	#cp /vagrant/sys/nginx/default /etc/nginx/sites-available/default
+	#apt-get install -y --force-yes apache2-utils
 	#htpasswd -c /etc/nginx/conf.d/kibana.178.62.66.75.htpasswd vagrant
-	ln -s /vagrant/frames /usr/share/nginx/www/frames
-	service nginx restart
+	#ln -s /vagrant/frames /usr/share/nginx/www/frames
+	#service nginx restart
 
 	echo "RAC: INSTALLING MYSQL SERVER"
-	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
-	sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
-	sudo apt-get -y install mysql-server
+	debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
+	debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
+	apt-get install -y --force-yes mysql-server
 
 	echo "RAC: INSTALLING PYTHON 2.7"
-	apt-get install python2.7
+	apt-get install -y --force-yes python2.7
 
 	echo "RAC: INSTALLING PYTHON PACKAGES"
 	apt-get install -y --force-yes python-bs4
@@ -133,6 +132,7 @@ then
 	pip install elasticsearch
 	pip install pygoogle
 	pip install requests
+	pip install tornado
 
 	#clean up
 	echo "RAC: CLEANING UP...."
