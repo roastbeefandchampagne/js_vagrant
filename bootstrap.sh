@@ -94,17 +94,17 @@ then
 	screen -dmS kibana ./bin/kibana
 
 	#install Nginx
-	#cd /vagrant
-	#apt-get install -y --force-yes php5-fpm
-	#cp /vagrant/sys/php/php.ini /etc/php5/fpm/php.ini
-	#service php5-fpm restart
+	cd /vagrant
+	apt-get install -y --force-yes php5-fpm
+	cp /vagrant/sys/php/php.ini /etc/php5/fpm/php.ini
+	service php5-fpm restart
 
-	#apt-get install -y --force-yes nginx
-	#cp /vagrant/sys/nginx/default /etc/nginx/sites-available/default
-	#apt-get install -y --force-yes apache2-utils
+	apt-get install -y --force-yes nginx
+	cp /vagrant/sys/nginx/default /etc/nginx/sites-available/default
+	apt-get install -y --force-yes apache2-utils
 	#htpasswd -c /etc/nginx/conf.d/kibana.178.62.66.75.htpasswd vagrant
-	#ln -s /vagrant/frames /usr/share/nginx/www/frames
-	#service nginx restart
+	ln -s /vagrant/frames /usr/share/nginx/www/frames
+	service nginx restart
 
 	echo "RAC: INSTALLING MYSQL SERVER"
 	debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
