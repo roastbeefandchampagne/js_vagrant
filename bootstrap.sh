@@ -6,8 +6,8 @@
 # roastbeefandchampagne@gmail.com
 # 2015
 
-echo "--RAC: ELASTICSEARCH - Tornado DEV VAGRANT INSTALL--"
-echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
+echo "--RAC: ELASTICSEARCH - Python3 DEV VAGRANT INSTALL--"
+echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 3.2 + Nginx--"
 
 apt-get update
 apt-get install -y --force-yes git
@@ -111,28 +111,9 @@ then
 	debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
 	apt-get install -y --force-yes mysql-server
 
-	echo "RAC: INSTALLING PYTHON 2.7"
-	apt-get install -y --force-yes python2.7
+	/vagrant/install_py3.sh
 
-	echo "RAC: INSTALLING PYTHON PACKAGES"
-	apt-get install -y --force-yes python-bs4
-	apt-get install -y --force-yes libmysqlclient-dev
-	apt-get install -y --force-yes python-dev
-
-	mkdir -p /home/develop/packages
-	cd /home/develop/packages
-	wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
-	tar -zxf pip-0.7.2.tar.gz
-	cd pip-0.7.2
-	python setup.py install
-
-	pip install beautifulsoup4
-	pip install MySQL-python
-	pip install feedparser
-	pip install elasticsearch
-	pip install pygoogle
-	pip install requests
-	pip install tornado
+	apt-get update -y --force-yes && apt-get upgrade -y --force-yes
 
 	#clean up
 	echo "RAC: CLEANING UP...."
