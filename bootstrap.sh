@@ -6,8 +6,8 @@
 # roastbeefandchampagne@gmail.com
 # 2015
 
-echo "--RAC: ELASTICSEARCH - Tornado DEV VAGRANT INSTALL--"
-echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
+echo "--RAC: DEV VAGRANT Master Branch--"
+echo "--Elasticsearch + Marvel + Kibana + Logstash + Python 2.7 + Nginx--"
 
 apt-get update
 apt-get install -y --force-yes git
@@ -44,54 +44,10 @@ then
 	cd /vagrant
 	./start_all.sh
 
-	#installing shield
-	#echo "RAC: INSTALLING ELASTICSEARCH - Shield"
-	#cd /usr/share/elasticsearch 
-	#bin/plugin -i elasticsearch/license/latest
-	#bin/plugin -i elasticsearch/shield/latest
-
-	#bin/elasticsearch
-	#bin/shield/esusers useradd vagrant -r admin
-	#curl -XGET 'http://localhost:9200/'
-	#curl -u vagrant -XGET 'http://localhost:9200/'
-
-	#set up SSH Keys for the Logstash-forwarder
-	#mkdir -p /etc/pki/tls/certs
-	#mkdir /etc/pki/tls/private
-	#cd /etc/pki/tls
-	#sudo openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
-	#cp /vagrant/sys/logstash/01-lumberjack-input.conf /etc/logstash/conf.d/01-lumberjack-input.conf 
-	#cp /vagrant/sys/logstash/10-syslog.conf /etc/logstash/conf.d/10-syslog.conf
-	#service logstash restart
-
-	# TODO get password inserted automaticaly
-	#echo "password for User vagrant = vagrant"
-	#scp /etc/pki/tls/certs/logstash-forwarder.crt vagrant@127.0.0.1:/tmp
-
-	#install logstash-forwarder
-	#cd /home/elasticsearch
-	#cp /vagrant/sys/logstash/forwarder/logstash-forwarder /etc/logstash-forwarder
-	#echo 'deb http://packages.elasticsearch.org/logstashforwarder/debian stable main' | sudo tee /etc/apt/sources.list.d/logstashforwarder.list
-	#wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
-	#apt-get update
-	#apt-get install -y --force-yes logstash-forwarder
-	#wget https://assets.digitalocean.com/articles/logstash/logstash-forwarder_0.3.1_i386.deb
-	#dpkg -i logstash-forwarder_0.3.1_i386.deb
-	#cd /etc/init.d/
-	#wget https://raw.githubusercontent.com/elasticsearch/logstash-forwarder/a73e1cb7e43c6de97050912b5bb35910c0f8d0da/logstash-forwarder.init -O logstash-forwarder
-	#chmod +x logstash-forwarder
-	#update-rc.d logstash-forwarder defaults
-
-	#mkdir -p /etc/pki/tls/certs
-	#cp /tmp/logstash-forwarder.crt /etc/pki/tls/certs/
-	#service logstash-forwarder restart
-
 	#install kibana
 	cd /home/elasticsearch
 	wget "https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz"
 	tar -zxf kibana-*-linux-x64.tar.gz
-	cd kibana*
-	screen -dmS kibana ./bin/kibana
 
 	#install Nginx
 	cd /vagrant
@@ -102,8 +58,6 @@ then
 	apt-get install -y --force-yes nginx
 	cp /vagrant/sys/nginx/default /etc/nginx/sites-available/default
 	apt-get install -y --force-yes apache2-utils
-	#htpasswd -c /etc/nginx/conf.d/kibana.178.62.66.75.htpasswd vagrant
-	ln -s /vagrant/frames /usr/share/nginx/www/frames
 	service nginx restart
 
 	echo "RAC: INSTALLING MYSQL SERVER"

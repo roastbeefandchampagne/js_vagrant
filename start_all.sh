@@ -6,7 +6,8 @@
 # roastbeefandchampagne@gmail.com
 # 2015
 
+killall -9 python
+killall -9 java
 service elasticsearch restart
 service logstash restart
-#service logstash-forwarder start
-#cd /home/elasticsearch/kibana*; screen -dmS kibana ./bin/kibana
+screen -dmS kibana /home/elasticsearch/kibana*/bin/kibana
