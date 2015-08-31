@@ -6,8 +6,8 @@
 # roastbeefandchampagne@gmail.com
 # 2015
 
-echo "--RAC: ELASTICSEARCH - Tornado DEV VAGRANT INSTALL--"
-echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Nginx--"
+echo "--RAC: ELASTICSEARCH - Selenium DEV VAGRANT INSTALL--"
+echo "--Elasticsearch + Marvel + Kibana + Logstash/forwarder + Python 2.7 + Selenium + Nginx--"
 
 apt-get update
 apt-get install -y --force-yes git
@@ -133,6 +133,13 @@ then
 	pip install pygoogle
 	pip install requests
 	pip install tornado
+	pip install selenium
+
+	# install selenium
+	cd /vagrant
+	echo "RAC: INSTALLING SELENIUM SERVER"
+	wget "https://selenium.googlecode.com/files/selenium-server-standalone-2.39.0.jar"
+	screen -dmS selenium java -jar selenium-server-standalone-2.39.0.jar
 
 	#clean up
 	echo "RAC: CLEANING UP...."
