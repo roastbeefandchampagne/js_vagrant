@@ -1,7 +1,7 @@
 # Roastbeef and Champagne ELK
 ##### Elasticsearch dev vagrant<br>
 
-## The Logstash dev Branch :)
+## The Master Branch :)
 
 ### Contents
 * Elasticsearch 1 node

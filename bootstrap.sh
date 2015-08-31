@@ -7,7 +7,7 @@
 # 2015
 
 echo "--RAC: DEV VAGRANT Master Branch--"
-echo "--Elasticsearch + Marvel + Kibana + Logstash + Python 2.7 + Nginx--"
+echo "--Elasticsearch + Marvel + Kibana + Logstash + Python 2.7 + MYSQL + Nginx--"
 
 apt-get update
 apt-get install -y --force-yes git
@@ -86,7 +86,6 @@ then
 	pip install elasticsearch
 	pip install pygoogle
 	pip install requests
-	pip install tornado
 
 	#clean up
 	echo "RAC: CLEANING UP...."
